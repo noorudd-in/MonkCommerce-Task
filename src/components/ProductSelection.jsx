@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SingleProductRow, SingleVariantRow } from "./SingleRow";
 
 const ProductSelection = ({
@@ -47,8 +47,8 @@ const ProductSelection = ({
   };
 
   // Toggle variants selection checkbox
-  const handleVariantChange = (productId, variant) => {
-    const productExists = selectedProducts.find((p) => p.id === productId);
+  const handleVariantChange = (product, variant) => {
+    const productExists = selectedProducts.find((p) => p.id === product.id);
     let updatedSelection;
 
     if (productExists) {
@@ -60,7 +60,7 @@ const ProductSelection = ({
       if (isVariantSelected) {
         // Remove the variant from the product since it's already selected.
         updatedSelection = selectedProducts.map((p) =>
-          p.id === productId
+          p.id === product.id
             ? {
                 ...p,
                 variants: p.variants.filter((v) => v.id !== variant.id),
@@ -70,7 +70,7 @@ const ProductSelection = ({
       } else {
         // Add the variant to the product sice user selected it.
         updatedSelection = selectedProducts.map((p) =>
-          p.id === productId ? { ...p, variants: [...p.variants, variant] } : p
+          p.id === product.id ? { ...p, variants: [...p.variants, variant] } : p
         );
       }
 
@@ -80,7 +80,7 @@ const ProductSelection = ({
       // Create new product object with the selected variant
       updatedSelection = [
         ...selectedProducts,
-        { id: productId, variants: [variant] },
+        { ...product, variants: [variant] },
       ];
     }
 
@@ -117,7 +117,7 @@ const ProductSelection = ({
                     key={variant.id}
                     label={variant.title}
                     isChecked={isVariantSelected(product.id, variant.id)}
-                    onChange={() => handleVariantChange(product.id, variant)}
+                    onChange={() => handleVariantChange(product, variant)}
                   />
                 ))}
             </div>
