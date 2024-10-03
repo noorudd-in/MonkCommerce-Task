@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Pencil } from "lucide-react";
 import ShowProductsModal from "./ShowProductsModal";
 
-const ListSingleProduct = ({ product, index, updateProduct }) => {
+const ListSingleProduct = ({
+  product,
+  index,
+  updateProduct,
+  updateDiscount,
+}) => {
   const [showModal, setShowModal] = useState(false);
 
   const updateProductDetails = (data) => {
@@ -18,6 +23,14 @@ const ListSingleProduct = ({ product, index, updateProduct }) => {
       });
     });
     updateProduct(index, newProducts);
+  };
+
+  const handleDiscount = (type, value) => {
+    const updatedProduct = {
+      ...product,
+      [type]: value,
+    };
+    updateDiscount(index, updatedProduct);
   };
 
   return (
@@ -42,7 +55,12 @@ const ListSingleProduct = ({ product, index, updateProduct }) => {
         {product.discount ? (
           <div>Discount Added</div>
         ) : (
-          <button className="btn btn-accent">Add Discount</button>
+          <button
+            className="btn btn-accent"
+            onClick={() => handleDiscount("discount", true)}
+          >
+            Add Discount
+          </button>
         )}
       </div>
 
