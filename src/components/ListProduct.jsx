@@ -37,6 +37,12 @@ const ListProduct = () => {
     setProducts(newData);
   };
 
+  const updateDiscount = (index, data) => {
+    const newData = [...products];
+    newData[index] = data;
+    setProducts(newData);
+  };
+
   return (
     <div className="mt-10">
       <h1 className="text-lg font-semibold">Add Products</h1>
@@ -53,6 +59,7 @@ const ListProduct = () => {
                 index={index}
                 product={product}
                 updateProduct={updateProduct}
+                updateDiscount={updateDiscount}
               />
             );
           })}
