@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Pencil } from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil } from "lucide-react";
 import ShowProductsModal from "./ShowProductsModal";
+import ListSingleVariant from "./ListSingleVariant";
 
 const ListSingleProduct = ({
   product,
@@ -9,6 +10,7 @@ const ListSingleProduct = ({
   updateDiscount,
 }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showVariants, setShowVariants] = useState(false);
 
   const updateProductDetails = (data) => {
     const newProducts = [];
@@ -82,6 +84,34 @@ const ListSingleProduct = ({
           )}
         </div>
       </div>
+      {product?.variants?.[0] != undefined && (
+        <div className="flex justify-end">
+          {showVariants ? (
+            <div
+              className="flex gap-1 text-blue-500 cursor-pointer"
+              onClick={() => setShowVariants(false)}
+            >
+              <h1 className="underline">Hide Variants</h1> <ChevronUp />
+            </div>
+          ) : (
+            <div
+              className="flex gap-1 text-blue-500 cursor-pointer"
+              onClick={() => setShowVariants(true)}
+            >
+              <h1 className="underline ">Show Variants</h1>
+              <ChevronDown />
+            </div>
+          )}
+        </div>
+      )}
+
+      {showVariants && (
+        <div>
+          {product?.variants.map((variant) => {
+            return <ListSingleVariant />;
+          })}
+        </div>
+      )}
 
       {/* Show Modal once user clicks on edit button */}
       {showModal && (
