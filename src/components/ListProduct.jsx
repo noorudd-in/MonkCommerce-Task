@@ -25,6 +25,9 @@ const ListProduct = () => {
   };
 
   const updateProduct = (index, data) => {
+    if (data.length < 1) {
+      return;
+    }
     let len = products.length;
     let newData = [];
     for (let i = 0; i < index; i++) {
