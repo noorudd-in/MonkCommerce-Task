@@ -11,6 +11,7 @@ const ListProduct = () => {
       discountType: "percent",
     },
   ]);
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
 
   const addEmptyProduct = () => {
     const newProducts = [...products];
@@ -46,6 +47,24 @@ const ListProduct = () => {
     setProducts(newData);
   };
 
+  const deleteItem = (index, type, data) => {
+    if (type == "product") {
+      let newData = [...products];
+      newData.splice(index, 1);
+      setProducts(newData);
+    } else {
+      //
+    }
+  };
+
+  useEffect(() => {
+    if (products.length > 1) {
+      setShowDeleteButton(true);
+    } else {
+      setShowDeleteButton(false);
+    }
+  }, [products]);
+
   useEffect(() => {
     console.log(products);
   }, [products]);
@@ -67,6 +86,8 @@ const ListProduct = () => {
                 product={product}
                 updateProduct={updateProduct}
                 updateDiscount={updateDiscount}
+                deleteItem={deleteItem}
+                showDelete={showDeleteButton}
               />
             );
           })}
