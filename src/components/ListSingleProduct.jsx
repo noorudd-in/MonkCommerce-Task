@@ -36,7 +36,7 @@ const ListSingleProduct = ({
   return (
     <>
       <div className="flex flex-col lg:flex-row gap-2 my-2">
-        <div className="w-full">
+        <div className="w-full lg:w-8/12">
           <label className="input input-bordered flex items-center gap-2">
             <input
               type="button"
@@ -52,16 +52,35 @@ const ListSingleProduct = ({
             />
           </label>
         </div>
-        {product.discount ? (
-          <div>Discount Added</div>
-        ) : (
-          <button
-            className="btn btn-accent"
-            onClick={() => handleDiscount("discount", true)}
-          >
-            Add Discount
-          </button>
-        )}
+        <div className="lg:w-4/12">
+          {product.discount ? (
+            <div className="flex gap-2">
+              <input
+                type="number"
+                value={product.discountValue}
+                className="input input-bordered w-full max-w-xs"
+                onChange={(e) =>
+                  handleDiscount("discountValue", e.target.value)
+                }
+              />
+              <select
+                className="select select-bordered w-full max-w-xs"
+                defaultValue="percent"
+                onChange={(e) => handleDiscount("discountType", e.target.value)}
+              >
+                <option value="percent">% off</option>
+                <option value="flat">flat off</option>
+              </select>
+            </div>
+          ) : (
+            <button
+              className="btn btn-accent w-full"
+              onClick={() => handleDiscount("discount", true)}
+            >
+              Add Discount
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Show Modal once user clicks on edit button */}
