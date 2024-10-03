@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Pencil } from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
 import ShowProductsModal from "./ShowProductsModal";
 import ListSingleVariant from "./ListSingleVariant";
 
@@ -8,6 +8,8 @@ const ListSingleProduct = ({
   index,
   updateProduct,
   updateDiscount,
+  deleteItem,
+  showDelete,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [showVariants, setShowVariants] = useState(false);
@@ -35,10 +37,24 @@ const ListSingleProduct = ({
     updateDiscount(index, updatedProduct);
   };
 
+  const handleDelete = (type, variantId = null, data = null) => {
+    if (type == "product") {
+      deleteItem(index, "product");
+    } else {
+      // Dont' delete varaint if it's less tha 2.
+      if (product.variant.length < 2) {
+        return;
+      }
+      let newData = [...product];
+      newData = newData.filter((ele) => ele.variant.id != variantId);
+      deleteItem(index, "variant", newData);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col lg:flex-row gap-2 my-2">
-        <div className="w-full lg:w-8/12">
+        <div className="w-full lg:w-6/12">
           <label className="input input-bordered flex items-center gap-2">
             <input
               type="button"
@@ -54,25 +70,31 @@ const ListSingleProduct = ({
             />
           </label>
         </div>
-        <div className="lg:w-4/12">
+        <div className="lg:w-6/12">
           {product.discount ? (
-            <div className="flex gap-2">
+            <div className="flex gap-1 items-center">
               <input
                 type="number"
                 value={product.discountValue}
-                className="input input-bordered w-full max-w-xs"
+                className="input input-bordered w-5/12 max-w-xs"
                 onChange={(e) =>
                   handleDiscount("discountValue", e.target.value)
                 }
               />
               <select
-                className="select select-bordered w-full max-w-xs"
+                className="select select-bordered w-5/12 max-w-xs"
                 defaultValue="percent"
                 onChange={(e) => handleDiscount("discountType", e.target.value)}
               >
                 <option value="percent">% off</option>
                 <option value="flat">flat off</option>
               </select>
+              {showDelete && (
+                <Trash2
+                  className="text-red-500 cursor-pointer"
+                  onClick={() => handleDelete("product")}
+                />
+              )}
             </div>
           ) : (
             <button
@@ -84,7 +106,7 @@ const ListSingleProduct = ({
           )}
         </div>
       </div>
-      {product?.variants?.[0] != undefined && (
+      {product?.variants?.length > 1 && (
         <div className="flex justify-end">
           {showVariants ? (
             <div
