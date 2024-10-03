@@ -1,10 +1,10 @@
 import { Search, X } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Loader from "./Loader";
 import ProductSelection from "./ProductSelection";
 import { fetchPageData } from "../utils.js";
 
-const ShowProductsModal = ({ setShowModal }) => {
+const ShowProductsModal = ({ setShowModal, updateProduct }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
@@ -12,15 +12,33 @@ const ShowProductsModal = ({ setShowModal }) => {
   const [variantCount, setVariantCount] = useState(0);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const listRef = useRef(null);
 
   const fetchMoreProducts = async () => {
     setIsFetching(true);
-    console.log("Fetching more data!");
-    const response = await fetchPageData(page);
-    const newData = [...data, ...response];
-    setData(newData);
+    const response = await fetchPageData(page, search);
+    if (response != null) {
+      const newData = [...data, ...response];
+      setData(newData);
+    }
     setIsFetching(false);
+  };
+
+  const fetchSearchProducts = async () => {
+    setIsLoading(true);
+    const response = await fetchPageData(1, search);
+    if (response != null) {
+      setData(response);
+    } else {
+      setData([]);
+    }
+    setIsLoading(false);
+  };
+
+  const handleAdd = () => {
+    updateProduct(selectedProducts);
+    setShowModal(false);
   };
 
   useEffect(() => {
@@ -36,7 +54,7 @@ const ShowProductsModal = ({ setShowModal }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetchPageData(page).then((res) => {
+    fetchPageData(page, search).then((res) => {
       setData(res);
       setIsLoading(false);
       setPage((prevPage) => prevPage + 1);
@@ -44,9 +62,14 @@ const ShowProductsModal = ({ setShowModal }) => {
   }, []);
 
   useEffect(() => {
-    console.log("Calling API");
     fetchMoreProducts();
   }, [page]);
+
+  useEffect(() => {
+    setPage(1);
+    console.log(search);
+    fetchSearchProducts();
+  }, [search]);
 
   const handleScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = listRef.current;
@@ -68,7 +91,11 @@ const ShowProductsModal = ({ setShowModal }) => {
           <div className="my-2">
             <label className="input input-bordered input-sm flex items-center gap-2">
               <Search />
-              <input type="text" placeholder="Search product" />
+              <input
+                type="text"
+                placeholder="Search product"
+                onChange={(e) => setSearch(e.target.value)}
+              />
             </label>
           </div>
 
@@ -83,13 +110,24 @@ const ShowProductsModal = ({ setShowModal }) => {
               handleScroll={handleScroll}
             />
           )}
-          <div className="flex justify-between">
+          <div className="flex justify-between mt-2">
             <div className="flex items-center">
-              {productCount} product selected ({variantCount} variants)
+              {productCount} product selected{" "}
+              <span className="hidden lg:block">({variantCount} variants)</span>
             </div>
             <div>
-              <button className="btn btn-sm mx-1">Cancel</button>
-              <button className="btn btn-accent btn-sm mx-1">Add</button>
+              <button
+                className="btn btn-sm mx-1"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-accent btn-sm mx-1"
+                onClick={handleAdd}
+              >
+                Add
+              </button>
             </div>
           </div>
         </div>
