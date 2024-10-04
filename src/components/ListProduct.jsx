@@ -57,6 +57,24 @@ const ListProduct = () => {
     }
   };
 
+  const handleDragStart = (event, index) => {
+    event.dataTransfer.setData("draggedIndex", index);
+  };
+
+  const handleDrop = (event, dropIndex) => {
+    const draggedIndex = event.dataTransfer.getData("draggedIndex");
+
+    if (draggedIndex === dropIndex) {
+      return;
+    }
+
+    const updatedItems = [...products];
+    const [draggedItem] = updatedItems.splice(draggedIndex, 1);
+    updatedItems.splice(dropIndex, 0, draggedItem);
+
+    setProducts(updatedItems);
+  };
+
   useEffect(() => {
     if (products.length > 1) {
       setShowDeleteButton(true);
@@ -88,6 +106,8 @@ const ListProduct = () => {
                 updateDiscount={updateDiscount}
                 deleteItem={deleteItem}
                 showDelete={showDeleteButton}
+                handleDragStart={handleDragStart}
+                handleDrop={handleDrop}
               />
             );
           })}

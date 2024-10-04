@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Pencil, Trash2 } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Pencil,
+  Trash2,
+  GripVertical,
+} from "lucide-react";
 import ShowProductsModal from "./ShowProductsModal";
 import ListSingleVariant from "./ListSingleVariant";
 
@@ -10,6 +16,8 @@ const ListSingleProduct = ({
   updateDiscount,
   deleteItem,
   showDelete,
+  handleDragStart,
+  handleDrop,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [showVariants, setShowVariants] = useState(false);
@@ -53,9 +61,18 @@ const ListSingleProduct = ({
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row gap-2 my-2">
-        <div className="w-full lg:w-6/12">
-          <label className="input input-bordered flex items-center gap-2">
+      <div
+        className="flex flex-col lg:flex-row gap-2 my-2"
+        draggable
+        onDragStart={(event) => handleDragStart(event, index)}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(event) => handleDrop(event, index)}
+      >
+        <div className="flex items-center w-full lg:w-6/12">
+          <div>
+            <GripVertical />
+          </div>
+          <label className="w-full input input-bordered flex items-center gap-2">
             <input
               type="button"
               className="grow text-left"
