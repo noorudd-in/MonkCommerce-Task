@@ -47,6 +47,12 @@ const ListProduct = () => {
     setProducts(newData);
   };
 
+  const updateVariants = (index, data) => {
+    const newData = [...products];
+    newData[index] = data;
+    setProducts(newData);
+  };
+
   const deleteItem = (index, type, data) => {
     let newData = [...products];
     if (type == "product") {
@@ -110,6 +116,7 @@ const ListProduct = () => {
                 product={product}
                 updateProduct={updateProduct}
                 updateDiscount={updateDiscount}
+                updateVariants={updateVariants}
                 deleteItem={deleteItem}
                 showDelete={showDeleteButton}
                 handleDragStart={handleDragStart}
