@@ -14,6 +14,7 @@ const ListSingleProduct = ({
   index,
   updateProduct,
   updateDiscount,
+  updateVariants,
   deleteItem,
   showDelete,
   handleDragStart,
@@ -61,6 +62,10 @@ const ListSingleProduct = ({
         setShowVariants(false);
       }
     }
+  };
+
+  const updateProductVariants = (data) => {
+    updateVariants(index, data);
   };
 
   return (
@@ -150,13 +155,16 @@ const ListSingleProduct = ({
 
       {showVariants && (
         <div>
-          {product?.variants.map((variant) => {
+          {product?.variants.map((variant, index) => {
             return (
               <ListSingleVariant
                 key={variant.id}
+                index={index}
                 data={variant}
                 product={product}
                 handleDelete={handleDelete}
+                updateProductVariants={updateProductVariants}
+                handleDiscount={handleDiscount}
               />
             );
           })}
