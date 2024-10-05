@@ -45,17 +45,21 @@ const ListSingleProduct = ({
     updateDiscount(index, updatedProduct);
   };
 
-  const handleDelete = (type, variantId = null, data = null) => {
+  const handleDelete = (type, variantId = null) => {
     if (type == "product") {
       deleteItem(index, "product");
     } else {
       // Dont' delete varaint if it's less tha 2.
-      if (product.variant.length < 2) {
+      if (product.variants.length < 2) {
         return;
       }
-      let newData = [...product];
-      newData = newData.filter((ele) => ele.variant.id != variantId);
-      deleteItem(index, "variant", newData);
+      let newVariants = [...product.variants];
+      newVariants = newVariants.filter((ele) => ele.id != variantId);
+      const newProduct = { ...product, variants: newVariants };
+      deleteItem(index, "variant", newProduct);
+      if (newVariants.length < 2) {
+        setShowVariants(false);
+      }
     }
   };
 
@@ -147,7 +151,14 @@ const ListSingleProduct = ({
       {showVariants && (
         <div>
           {product?.variants.map((variant) => {
-            return <ListSingleVariant />;
+            return (
+              <ListSingleVariant
+                key={variant.id}
+                data={variant}
+                product={product}
+                handleDelete={handleDelete}
+              />
+            );
           })}
         </div>
       )}
