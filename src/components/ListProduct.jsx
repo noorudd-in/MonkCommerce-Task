@@ -48,12 +48,18 @@ const ListProduct = () => {
   };
 
   const deleteItem = (index, type, data) => {
+    let newData = [...products];
     if (type == "product") {
-      let newData = [...products];
       newData.splice(index, 1);
       setProducts(newData);
     } else {
-      //
+      for (let i = 0; i < newData.length; i++) {
+        if (newData[i].productId == data.productId) {
+          newData[i].variants = data.variants;
+          break;
+        }
+      }
+      setProducts(newData);
     }
   };
 
