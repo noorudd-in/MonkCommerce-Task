@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  Pencil,
-  Trash2,
-  GripVertical,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil, X, GripVertical } from "lucide-react";
 import ShowProductsModal from "./ShowProductsModal";
 import ListSingleVariant from "./ListSingleVariant";
 
@@ -116,8 +110,8 @@ const ListSingleProduct = ({
                 <option value="flat">flat off</option>
               </select>
               {showDelete && (
-                <Trash2
-                  className="text-red-500 cursor-pointer"
+                <X
+                  className="cursor-pointer"
                   onClick={() => handleDelete("product")}
                 />
               )}

@@ -95,10 +95,6 @@ const ListProduct = () => {
     }
   }, [products]);
 
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
-
   return (
     <div className="mt-10">
       <h1 className="text-lg font-semibold">Add Products</h1>

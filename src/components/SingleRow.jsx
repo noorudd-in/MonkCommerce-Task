@@ -1,5 +1,6 @@
 export const SingleProductRow = ({
   label,
+  image,
   isChecked,
   onChange,
   inDeterminate,
@@ -16,10 +17,7 @@ export const SingleProductRow = ({
       <div className="flex gap-2 items-center">
         <div className="avatar">
           <div className="mask mask-squircle h-12 w-12">
-            <img
-              src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-              alt="Avatar Tailwind CSS Component"
-            />
+            <img src={image} alt="Avatar Tailwind CSS Component" />
           </div>
         </div>
         <h1>{label}</h1>

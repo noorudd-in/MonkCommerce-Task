@@ -87,10 +87,6 @@ const ProductSelection = ({
     setSelectedProducts(updatedSelection);
   };
 
-  useEffect(() => {
-    console.log("Selected Products:", selectedProducts);
-  }, [selectedProducts]);
-
   return (
     <div
       ref={listRef}
@@ -106,6 +102,11 @@ const ProductSelection = ({
           <div key={product.id}>
             <SingleProductRow
               label={product.title}
+              image={
+                product?.image?.src
+                  ? product?.image?.src
+                  : "https://as1.ftcdn.net/v2/jpg/04/60/01/36/1000_F_460013622_6xF8uN6ubMvLx0tAJECBHfKPoNOR5cRa.jpg"
+              }
               isChecked={isProductChecked}
               inDeterminate={isProductPartial}
               onChange={() => handleProductChange(product)}

@@ -67,7 +67,6 @@ const ShowProductsModal = ({ setShowModal, updateProduct }) => {
 
   useEffect(() => {
     setPage(1);
-    console.log(search);
     fetchSearchProducts();
   }, [search]);
 

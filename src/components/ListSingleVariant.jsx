@@ -1,4 +1,4 @@
-import { GripVertical, Trash2 } from "lucide-react";
+import { GripVertical, X } from "lucide-react";
 
 const ListSingleVariant = ({
   data,
@@ -22,10 +22,7 @@ const ListSingleVariant = ({
     const updatedItems = { ...product };
     const [draggedItem] = updatedItems.variants.splice(draggedIndex, 1);
     updatedItems.variants.splice(dropIndex, 0, draggedItem);
-    console.log(updatedItems);
     updateProductVariants(updatedItems);
-
-    //setProducts(updatedItems);
   };
   return (
     <div
@@ -71,8 +68,8 @@ const ListSingleVariant = ({
         )}
 
         {product.variants.length > 1 && (
-          <Trash2
-            className="text-red-500 cursor-pointer"
+          <X
+            className="cursor-pointer"
             onClick={() => handleDelete("varaint", data.id)}
           />
         )}
